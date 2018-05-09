@@ -8,7 +8,7 @@ def calculaptfunct(pt1,pt2,t):
 	
 #Funcao que calcula os pontos da curva (j) em funcao de t e dos pontos de controle
 def calculaj():
-	print coords
+	print (coords)
 	if(len(coords) > 3):
 
 		Ax = coords[0][0]

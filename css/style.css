@@ -1,0 +1,12 @@
+html, body, canvas, #contain-canvas {
+  width: 100%;
+  height: 98%;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: #444444;
+}
+
+.filtro {
+  margin-right: 4px;
+}
