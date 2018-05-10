@@ -104,7 +104,7 @@ jQuery(window).resize(function() {
 });
 
 // define a precisão no desenho da reta
-var precisao = 1000
+var precisao = 10
 
 //array de pontos de controle
 var pontos = []
@@ -280,3 +280,15 @@ function desenhar(){
         desenharSpline()
     }
 }
+
+
+
+function calcularPontos(){
+
+}
+
+
+/*
+bx =(Math.pow((1-t),3)/6)*x1+((3*Math.pow(t,3)-(6*Math.pow(t,2))+4)/6)*x2+((-3*Math.pow(t,3)+3*Math.pow(t,2)+3*t+1)/6)*x3+(Math.pow(t,3)/6)*x4
+by = =(Math.pow((1-t),3)/6)*y1+((3*Math.pow(t,3)-(6*Math.pow(t,2))+4)/6)*y2+((-3*Math.pow(t,3)+3*Math.pow(t,2)+3*t+1)/6)*y3+(Math.pow(t,3)/6)*y4
+*/
