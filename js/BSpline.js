@@ -54,7 +54,7 @@ var exibirPontos = true
 var exibirPoligonal = true
 var exibirCurva = true
 
-//manipulação dos cliques para exibição do desenho
+//Evento do botão Pontos
 jQuery( "#controle" ).click(function() {
     if(exibirPontos) {
         jQuery(this).removeClass('btn-success')
@@ -67,6 +67,8 @@ jQuery( "#controle" ).click(function() {
     desenhar()
 });
 
+
+//Evento do botão Poligonal
 jQuery( "#poligonal" ).click(function() {
     if(exibirPoligonal) {
         jQuery(this).removeClass('btn-success')
@@ -79,6 +81,7 @@ jQuery( "#poligonal" ).click(function() {
     desenhar()
 });
 
+//Evento do botão Curva
 jQuery( "#curva" ).click(function() {
     if(exibirCurva) {
         jQuery(this).removeClass('btn-success')
@@ -91,12 +94,13 @@ jQuery( "#curva" ).click(function() {
     desenhar()
 });
 
+//Evento do botão reset
 jQuery( "#reset" ).click(function() {
     pontos = []
     desenhar()
 });
 
-//cria o ponto se clicar fora de outros pontos e faz o desenho
+//Cria o ponto ao clicat na tela (se for um ponto existen te, o exclui)
 canvas.addEventListener("click", function(e) {
     if(findPoint(e) === false){
         var d = {
