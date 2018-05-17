@@ -25,7 +25,7 @@ BSpline.prototype.calcSpline = function(t, i){
 controles
 --------------------------------------------------------------------------
 */
-//configurações do canvas
+//configura o canvas
 function resizeCanvas() {
     canvas.width = parseFloat(window.getComputedStyle(canvas).width)
     canvas.height = parseFloat(window.getComputedStyle(canvas).height)
@@ -42,13 +42,11 @@ jQuery(window).resize(function() {
     }
 });
 
-// define a precisão no desenho da reta
+// variavel de precisão entre pontos
 var precisao = 1000
 
-//array de pontos de controle
+//array de pontos
 var pontos = []
-//variável indica que o ponto está sendo movido
-var move = false
 
 var exibirPontos = true
 var exibirPoligonal = true
@@ -102,63 +100,18 @@ jQuery( "#reset" ).click(function() {
 
 //Cria o ponto ao clicat na tela (se for um ponto existen te, o exclui)
 canvas.addEventListener("click", function(e) {
-    if(findPoint(e) === false){
-        var d = {
-            x: "",
-            y: ""
-        };
-        d.x = e.offsetX
-        d.y = e.offsetY
-        pontos.push(d)
-        desenhar()
-    }
-
-});
-
-//verifica se o click foi no raio de um ponto
-function findPoint(click){
-    for(var i = 0; i < pontos.length; i++){
-        var v = {
-            x: pontos[i].x - click.x,
-            y: pontos[i].y - click.y
-        };
-        if(Math.sqrt(v.x * v.x + v.y * v.y) <= 5){
-            return pontos[i]
-        }
-    }
-    return false
-}
-
-//se der double click num ponto, exclui ele do array e refaz o desenho
-canvas.addEventListener('dblclick', function(e){
-    var point = findPoint(e)
-    if(point !== false){
-        pontos.splice(pontos.indexOf(point), 1)
-        desenhar()
-    }
-});
-
-//se clicou num ponto, habilita a variável move
-canvas.addEventListener('mousedown', function(e) {
-    move = findPoint(e)
-});
-
-//se o ponto estiver clicado, calcula as novas coordenadas e refaz o desenho
-canvas.addEventListener('mousemove', function(e) {
-    if (move !== false) {
-        move.x = e.offsetX
-        move.y = e.offsetY
-        desenhar()
-    }
-});
-
-//libera a variável move
-canvas.addEventListener('mouseup', function() {
-    move = false
+    var d = {
+        x: "",
+        y: ""
+    };
+    d.x = e.offsetX
+    d.y = e.offsetY
+    pontos.push(d)
     desenhar()
 });
 
-//desenha os pontos de acordo com o array pontos que contem as coordenadas
+
+//desenha os pontos conforme as coordenadas no array de pontos
 function desenharPontos() {
     for(var i = 0; i < pontos.length; i++){
         ctx.beginPath()
@@ -170,7 +123,9 @@ function desenharPontos() {
     }
 }
 
-function ligarPontos(pontos) {
+//desenha as linhas conforme as coordenadas no array de pontos
+function desenharRetas() {
+    ctx.strokeStyle = "white"
     for(var z = 0; z < pontos.length - 1; z++){
         ctx.beginPath()
         ctx.moveTo(pontos[z].x, pontos[z].y)
@@ -178,12 +133,6 @@ function ligarPontos(pontos) {
         ctx.stroke()
         ctx.closePath()
     }
-}
-
-//Desenha as retas ligando os pontos registrados
-function desenharRetas() {
-    ctx.strokeStyle = "white"
-    ligarPontos(pontos)
 }
 
 //Desenha a curva b-spline
@@ -220,8 +169,8 @@ function desenhar(){
     if(exibirPoligonal) {
         desenharRetas()
     }
-    if (exibirCurva && !move) {
-        if(pontos.length >= 5){
+    if (exibirCurva) {
+        if(pontos.length >= 4){
             desenharSpline()
         }
     }
