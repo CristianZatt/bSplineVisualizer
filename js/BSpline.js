@@ -2,24 +2,21 @@ var BSpline = function(pontos){
     this.pontos = pontos
 };
 
-BSpline.prototype.calcSpline = function(t){
-    var bx = 0
-    var by = 0
-        if(pontos.length == 4){
-            var x1 = pontos[0].x
-            var x2 = pontos[1].x
-            var x3 = pontos[2].x
-            var x4 = pontos[3].x
-            var y1 = pontos[0].y
-            var y2 = pontos[1].y
-            var y3 = pontos[2].y
-            var y4 = pontos[3].y
+BSpline.prototype.calcSpline = function(t, i){
 
-            bx = (Math.pow((1-t),3)/6)*x1+((3*Math.pow(t,3)-(6*Math.pow(t,2))+4)/6)*x2+((-3*Math.pow(t,3)+3*Math.pow(t,2)+3*t+1)/6)*x3+(Math.pow(t,3)/6)*x4
-            by = (Math.pow((1-t),3)/6)*y1+((3*Math.pow(t,3)-(6*Math.pow(t,2))+4)/6)*y2+((-3*Math.pow(t,3)+3*Math.pow(t,2)+3*t+1)/6)*y3+(Math.pow(t,3)/6)*y4
-        }
-        return [bx,by]
+    let x1 = pontos[i-3].x
+    let x2 = pontos[i-2].x
+    let x3 = pontos[i-1].x
+    let x4 = pontos[i].x
+    let y1 = pontos[i-3].y
+    let y2 = pontos[i-2].y
+    let y3 = pontos[i-1].y
+    let y4 = pontos[i].y
 
+    let bx = (Math.pow((1-t),3)/6)*x1+((3*Math.pow(t,3)-(6*Math.pow(t,2))+4)/6)*x2+((-3*Math.pow(t,3)+3*Math.pow(t,2)+3*t+1)/6)*x3+(Math.pow(t,3)/6)*x4
+    let by = (Math.pow((1-t),3)/6)*y1+((3*Math.pow(t,3)-(6*Math.pow(t,2))+4)/6)*y2+((-3*Math.pow(t,3)+3*Math.pow(t,2)+3*t+1)/6)*y3+(Math.pow(t,3)/6)*y4
+    
+    return [bx,by]
 }
 
 
@@ -194,16 +191,17 @@ function desenharSpline() {
     var spline = new BSpline(pontos)
     ctx.beginPath()
     var antx,anty,x,y
-    antx = spline.calcSpline(0)[0]
-    anty = spline.calcSpline(0)[1]
     ctx.moveTo(antx,anty)
-    for(var t = 0;t <= 1;t += (1/precisao)){
-        var interpol = spline.calcSpline(t)
-        x = interpol[0]
-        y = interpol[1]
-        ctx.lineTo(x,y)
-        antx = x
-        anty = y
+    for (let i = 3; i < pontos.length; i++) {
+        for(var t = 0;t <= 1;t += (1/precisao)){
+        
+            var interpol = spline.calcSpline(t,i)
+            x = interpol[0]
+            y = interpol[1]
+            ctx.lineTo(x,y)
+            antx = x
+            anty = y
+        }
     }
     ctx.stroke()
     ctx.closePath()
@@ -219,11 +217,8 @@ function desenhar(){
         desenharRetas()
     }
     if (exibirCurva && !move) {
-        desenharSpline()
+        if(pontos.length >= 5){
+            desenharSpline()
+        }
     }
 }
-
-/*
-bx =(Math.pow((1-t),3)/6)*x1+((3*Math.pow(t,3)-(6*Math.pow(t,2))+4)/6)*x2+((-3*Math.pow(t,3)+3*Math.pow(t,2)+3*t+1)/6)*x3+(Math.pow(t,3)/6)*x4
-by = =(Math.pow((1-t),3)/6)*y1+((3*Math.pow(t,3)-(6*Math.pow(t,2))+4)/6)*y2+((-3*Math.pow(t,3)+3*Math.pow(t,2)+3*t+1)/6)*y3+(Math.pow(t,3)/6)*y4
-*/
