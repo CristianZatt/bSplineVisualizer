@@ -137,27 +137,26 @@ function desenharRetas() {
 
 //Desenha a curva b-spline
 function desenharSpline() {
-    ctx.strokeStyle = "yellow"
-    if(pontos.length == 0) {
-        return;
-    }
-    var spline = new BSpline(pontos)
-    ctx.beginPath()
-    var antx,anty,x,y
-    ctx.moveTo(antx,anty)
-    for (let i = 3; i < pontos.length; i++) {
-        for(var t = 0;t <= 1;t += (1/precisao)){
-        
-            var interpol = spline.calcSpline(t,i)
-            x = interpol[0]
-            y = interpol[1]
-            ctx.lineTo(x,y)
-            antx = x
-            anty = y
+    if(pontos.length >= 4){
+        ctx.strokeStyle = "yellow"
+        var spline = new BSpline(pontos)
+        ctx.beginPath()
+        var antx,anty,x,y
+        ctx.moveTo(antx,anty)
+        for (let i = 3; i < pontos.length; i++) {
+            for(var t = 0;t <= 1;t += (1/precisao)){
+            
+                var interpol = spline.calcSpline(t,i)
+                x = interpol[0]
+                y = interpol[1]
+                ctx.lineTo(x,y)
+                antx = x
+                anty = y
+            }
         }
+        ctx.stroke()
+        ctx.closePath()
     }
-    ctx.stroke()
-    ctx.closePath()
 }
 
 //desenha na tela
@@ -169,9 +168,7 @@ function desenhar(){
     if(exibirPoligonal) {
         desenharRetas()
     }
-    if (exibirCurva) {
-        if(pontos.length >= 4){
-            desenharSpline()
-        }
+    if (exibirCurva) {   
+        desenharSpline()
     }
 }
