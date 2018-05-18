@@ -1,0 +1,7 @@
+Basta abrir o arquivo index.html em seu navegador.
+
+Disponível em meu repositório git
+
+https://github.com/CristianZatt/bSplineVisualizer
+
+Cristian Césari Zatt - 56484
